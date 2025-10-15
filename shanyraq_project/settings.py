@@ -1,27 +1,31 @@
-"""
-Django settings for shanyraq_project project.
-Adapted for Render deployment by Rizat Tulkibayev.
-"""
-
 from pathlib import Path
 import os
+from dotenv import load_dotenv  # безопасная загрузка .env
+
+# --- ЗАГРУЗКА ПЕРЕМЕННЫХ ИЗ .env ---
+load_dotenv()
 
 # --- БАЗОВЫЕ НАСТРОЙКИ ---
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- БЕЗОПАСНОСТЬ ---
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-local-key')
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-# Основные домены
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+# ⚙️ На Vercel DEBUG должен быть False
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
+# Разрешённые домены
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS',
+    '.vercel.app,127.0.0.1,localhost'
+).split(',')
 
 # --- ПРИЛОЖЕНИЯ ---
 INSTALLED_APPS = [
-    # Интерфейс администратора
+    # Админ-дизайн
     'jazzmin',
 
-    # Стандартные приложения Django
+    # Django system apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -29,7 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Ваши приложения
+    # Твои приложения
     'articles',
     'users',
     'tests_app',
@@ -38,6 +42,10 @@ INSTALLED_APPS = [
 # --- MIDDLEWARE ---
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    # ✅ Добавляем WhiteNoise для статики (обязательно для Vercel)
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -51,8 +59,7 @@ ROOT_URLCONF = 'shanyraq_project.urls'
 WSGI_APPLICATION = 'shanyraq_project.wsgi.application'
 
 # --- БАЗА ДАННЫХ ---
-# На Render можно начать с SQLite (для теста),
-# позже перейти на PostgreSQL при необходимости
+# На Vercel — SQLite подходит для демонстрации, но лучше PostgreSQL через Supabase или Neon
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -76,8 +83,17 @@ USE_TZ = True
 
 # --- СТАТИКА И МЕДИА ---
 STATIC_URL = '/static/'
+
+# ⚙️ Настройка для Vercel: собранные файлы
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# WhiteNoise — автоматическая компрессия и кеширование
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -92,23 +108,3 @@ JAZZMIN_SETTINGS = {
 
 # --- ПРОЧЕЕ ---
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# --- РЕНДЕР / ПРОДАКШН ЛОГИКА ---
-# Render автоматически создаёт переменную окружения RENDER,
-# по ней отключаем DEBUG и добавляем домен
-if os.environ.get('RENDER', None):
-    DEBUG = False
-    ALLOWED_HOSTS.append('shanyraq.onrender.com')
-
-# Логирование (по желанию)
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {'class': 'logging.StreamHandler'},
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'INFO',
-    },
-}
