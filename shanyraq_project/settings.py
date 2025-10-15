@@ -1,31 +1,17 @@
 from pathlib import Path
 import os
-from dotenv import load_dotenv  # безопасная загрузка .env
 
-# --- ЗАГРУЗКА ПЕРЕМЕННЫХ ИЗ .env ---
-load_dotenv()
-
-# --- БАЗОВЫЕ НАСТРОЙКИ ---
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- БЕЗОПАСНОСТЬ ---
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-local-key')
+SECRET_KEY = 'django-insecure-local-key'
+DEBUG = True
 
-# ⚙️ На Vercel DEBUG должен быть False
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-
-# Разрешённые домены
-ALLOWED_HOSTS = os.environ.get(
-    'ALLOWED_HOSTS',
-    '.vercel.app,127.0.0.1,localhost'
-).split(',')
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.pythonanywhere.com']
 
 # --- ПРИЛОЖЕНИЯ ---
 INSTALLED_APPS = [
-    # Админ-дизайн
     'jazzmin',
-
-    # Django system apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -33,7 +19,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Твои приложения
     'articles',
     'users',
     'tests_app',
@@ -42,10 +27,7 @@ INSTALLED_APPS = [
 # --- MIDDLEWARE ---
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-
-    # ✅ Добавляем WhiteNoise для статики (обязательно для Vercel)
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # обязательно для статики
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -54,12 +36,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# --- URL / WSGI ---
 ROOT_URLCONF = 'shanyraq_project.urls'
 WSGI_APPLICATION = 'shanyraq_project.wsgi.application'
 
 # --- БАЗА ДАННЫХ ---
-# На Vercel — SQLite подходит для демонстрации, но лучше PostgreSQL через Supabase или Neon
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -83,17 +63,8 @@ USE_TZ = True
 
 # --- СТАТИКА И МЕДИА ---
 STATIC_URL = '/static/'
-
-# ⚙️ Настройка для Vercel: собранные файлы
-STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-# WhiteNoise — автоматическая компрессия и кеширование
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -106,5 +77,4 @@ JAZZMIN_SETTINGS = {
     "copyright": "© 2025 Shanyraq Journal",
 }
 
-# --- ПРОЧЕЕ ---
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
