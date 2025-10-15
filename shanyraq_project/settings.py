@@ -1,27 +1,25 @@
+# shanyraq_project/settings.py
 from pathlib import Path
 import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# --- БЕЗОПАСНОСТЬ ---
-SECRET_KEY = 'django-insecure-local-key'
-DEBUG = True
+SECRET_KEY = os.environ.get('SECRET_KEY', 'change-me-in-production')
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.pythonanywhere.com']
+ALLOWED_HOSTS = [
+    '127.0.0.1', 'localhost',
+    'rizat.pythonanywhere.com',         # ← твой домен на PA
+]
+CSRF_TRUSTED_ORIGINS = [
+    'https://rizat.pythonanywhere.com',
+]
 
-# --- ПРИЛОЖЕНИЯ ---
 INSTALLED_APPS = [
     'jazzmin',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    'articles',
-    'users',
-    'tests_app',
+    'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
+    'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles',
+    'articles', 'users', 'tests_app',
 ]
 
 # --- MIDDLEWARE ---
@@ -36,14 +34,31 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# --- ШАБЛОНЫ (TEMPLATES) ---
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],  # путь к твоей папке templates
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
 ROOT_URLCONF = 'shanyraq_project.urls'
 WSGI_APPLICATION = 'shanyraq_project.wsgi.application'
 
-# --- БАЗА ДАННЫХ ---
+# SQLite ок на старт. (Если потом пойдёшь в Postgres — поменяем)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME'  : BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -61,10 +76,10 @@ TIME_ZONE = 'Asia/Almaty'
 USE_I18N = True
 USE_TZ = True
 
-# --- СТАТИКА И МЕДИА ---
+# Статика/медиа для PA
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [BASE_DIR / 'static']           # если у тебя есть /Django/static
+STATIC_ROOT = BASE_DIR / 'staticfiles'             # сюда PA будет собирать
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
