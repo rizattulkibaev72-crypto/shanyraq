@@ -18,7 +18,7 @@
   ],
   "env": {
     "DJANGO_SETTINGS_MODULE": "shanyraq_project.settings",
-    "SECRET_KEY": "django-insecure-замени_на_свой",
+    "SECRET_KEY": "django-insecure-local-key",
     "DEBUG": "False",
     "ALLOWED_HOSTS": ".vercel.app,127.0.0.1,localhost"
   }
