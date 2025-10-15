@@ -1,0 +1,23 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Database
+db.sqlite3
+
+# Django static/media
+/staticfiles/
+/media/
+
+# System
+.DS_Store
+*.log
+
+# IDE
+.vscode/
+.idea/

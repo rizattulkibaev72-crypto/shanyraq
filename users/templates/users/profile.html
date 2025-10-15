@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="profile-container">
+  <!-- Левая карточка -->
+  <div class="profile-card">
+    {% if user.profile.photo %}
+      <img src="{{ user.profile.photo.url }}" alt="Фото профиля" class="avatar">
+    {% else %}
+      <div class="avatar-placeholder">{{ user.username|first|upper }}</div>
+    {% endif %}
+
+    <h2 class="profile-name">{{ user.first_name|default:user.username }}</h2>
+    <p class="profile-username">@{{ user.username }}</p>
+
+    <div class="profile-info">
+      <p><strong>Email:</strong> {{ user.email|default:"—" }}</p>
+      <p><strong>Дата регистрации:</strong> {{ user.date_joined|date:"d.m.Y" }}</p>
+      <p><strong>Последний вход:</strong> {{ user.last_login|date:"d.m.Y H:i" }}</p>
+    </div>
+
+    <a href="{% url 'logout' %}" class="btn-logout">Выйти</a>
+  </div>
+
+  <!-- Правая карточка -->
+  <div class="contact-card">
+    <h3>Связаться со мной</h3>
+    <div class="contact-links">
+      <a href="mailto:{{ user.email }}" class="contact-item gmail">✉️ Gmail</a>
+      <a href="https://t.me/yourtelegram" class="contact-item telegram" target="_blank">💬 Telegram</a>
+      <a href="https://instagram.com/yourinsta" class="contact-item insta" target="_blank">📸 Instagram</a>
+    </div>
+  </div>
+</div>
+
+
+<style>
+body {
+  background: #F6F7FB;
+  font-family: 'Inter', sans-serif;
+  color: #111;
+}
+
+/* === Контейнер === */
+.profile-container {
+  max-width: 1100px;
+  margin: 80px auto;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* === Профильная карточка === */
+.profile-card {
+  flex: 1 1 450px;
+  background: #fff;
+  border-radius: 30px;
+  padding: 50px 60px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 6px 18px rgba(139, 92, 246, 0.25);
+  margin: 0 auto 18px;
+}
+
+.avatar-placeholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #8B5CF6, #C084FC);
+  color: white;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  margin: 0 auto 18px;
+}
+
+.profile-name {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.profile-username {
+  color: #8B5CF6;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+.profile-info {
+  background: #F9F7FF;
+  border-radius: 16px;
+  padding: 20px 30px;
+  border: 1px solid #E5DEFF;
+  text-align: left;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.profile-info strong {
+  color: #8B5CF6;
+}
+
+.btn-logout {
+  margin-top: 35px;
+  background: #8B5CF6;
+  color: #fff;
+  padding: 12px 0;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: 0.25s;
+}
+
+.btn-logout:hover {
+  background: #7C3AED;
+  transform: translateY(-2px);
+}
+
+/* === Контактная карточка === */
+.contact-card {
+  flex: 0 1 300px;
+  background: #fff;
+  border-radius: 30px;
+  padding: 40px 35px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.contact-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 20px;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.25s;
+}
+
+.contact-item.gmail {
+  background: #FEECEC;
+  color: #C53030;
+}
+
+.contact-item.telegram {
+  background: #E6F3FF;
+  color: #1877F2;
+}
+
+.contact-item.insta {
+  background: linear-gradient(90deg, #F58529, #DD2A7B, #8134AF);
+  color: white;
+}
+
+.contact-item:hover {
+  transform: translateX(6px);
+  opacity: 0.9;
+}
+
+/* === Адаптив === */
+@media (max-width: 900px) {
+  .profile-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .contact-card {
+    max-width: 480px;
+    width: 100%;
+  }
+}
+</style>
+
+{% endblock %}

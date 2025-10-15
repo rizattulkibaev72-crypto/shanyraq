@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    .article-page {
+        max-width: 880px;
+        margin: 70px auto;
+        padding: 0 20px;
+        color: #0A0A0A;
+        font-family: 'Georgia', serif;
+        line-height: 1.8;
+    }
+
+    .article-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .article-title {
+        font-size: 44px;
+        font-weight: 900;
+        margin-bottom: 12px;
+        line-height: 1.2;
+    }
+
+    .article-meta {
+        font-size: 15px;
+        color: #777;
+    }
+
+    .article-image {
+        width: 100%;
+        height: 420px;
+        object-fit: cover;
+        border-radius: 26px;
+        margin: 40px 0;
+        box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+    }
+
+    .article-content p {
+        margin-bottom: 20px;
+        font-size: 18px;
+        color: #222;
+    }
+
+    .article-category {
+        display: inline-block;
+        background: #8B5CF6;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 18px;
+        letter-spacing: 0.3px;
+    }
+
+    .article-footer {
+        margin-top: 60px;
+        border-top: 1px solid #eee;
+        padding-top: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        color: #666;
+    }
+
+    .author-block {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .author-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: #f0f0f0;
+        overflow: hidden;
+    }
+
+    .author-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .back-link {
+        text-decoration: none;
+        font-weight: 600;
+        color: #8B5CF6;
+        transition: color 0.3s;
+    }
+
+    .back-link:hover {
+        color: #6D28D9;
+    }
+
+    @media (max-width: 768px) {
+        .article-title {
+            font-size: 32px;
+        }
+        .article-image {
+            height: 280px;
+        }
+    }
+</style>
+
+<div class="article-page">
+    <div class="article-header">
+        <div class="article-category">{{ article.category.name }}</div>
+        <h1 class="article-title">{{ article.title }}</h1>
+        <div class="article-meta">🕒 {{ article.created_at|date:"d.m.Y" }} &nbsp; • &nbsp; 👁 {{ article.views }}</div>
+    </div>
+
+    {% if article.image %}
+    <img src="{{ article.image.url }}" alt="{{ article.title }}" class="article-image">
+    {% endif %}
+
+    <div class="article-content">
+        {{ article.content|linebreaks }}
+    </div>
+
+    <div class="article-footer">
+        <div class="author-block">
+            <div class="author-avatar">
+{% if article.author.profile.avatar %}
+    <img src="{{ article.author.profile.avatar.url }}" alt="{{ article.author.username }}">
+{% else %}
+    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="avatar">
+{% endif %}
+            </div>
+            <div>
+                <strong>{{ article.author.username }}</strong><br>
+                Автор статьи
+            </div>
+        </div>
+        <a href="/" class="back-link">← Назад к журналу</a>
+    </div>
+</div>
+
+<hr style="margin:60px 0 30px; border:none; border-top:1px solid #eee;">
+
+<div class="comments-section">
+    <h3 style="font-weight:800; font-size:22px; margin-bottom:20px;">Комментарии</h3>
+
+    {% if comments %}
+        {% for comment in comments %}
+            <div class="comment-card" style="background:#fafafa; padding:16px 20px; border-radius:16px; margin-bottom:16px;">
+                <strong>{{ comment.author.username }}</strong>
+                <p style="margin:8px 0; line-height:1.6;">{{ comment.text }}</p>
+                <small style="color:#777;">{{ comment.created_at|date:"d.m.Y H:i" }}</small>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="color:#777;">Пока нет комментариев. Будь первым, кто поделится мнением!</p>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <form method="POST" style="margin-top:25px;">
+        {% csrf_token %}
+        <textarea name="text" rows="3" style="width:100%; padding:12px; border-radius:10px; border:1px solid #ddd; resize:none;" placeholder="Напиши свой комментарий..."></textarea>
+        <button type="submit" style="margin-top:10px; padding:10px 24px; border:none; border-radius:12px; background:#8B5CF6; color:white; font-weight:600; cursor:pointer;">
+            Отправить
+        </button>
+    </form>
+    {% else %}
+    <p style="margin-top:15px;">🔒 <a href="/users/login/" style="color:#8B5CF6; font-weight:600;">Войди</a>, чтобы оставить комментарий.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

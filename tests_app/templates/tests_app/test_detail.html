@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  body {
+    background: #FFFFFF;
+    color: #0A0A0A;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+  }
+
+  .test-detail-container {
+    max-width: 900px;
+    margin: 100px auto;
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  .test-card {
+    background: #F5F0E8;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.08);
+    transition: all 0.4s ease;
+    animation: fadeIn 0.8s ease forwards;
+  }
+
+  .test-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+  }
+
+  .test-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 40px 40px 0 0;
+    filter: brightness(0.85);
+  }
+
+  .test-content {
+    padding: 50px 60px;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .test-title {
+    font-size: 42px;
+    font-weight: 900;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+
+  .test-description {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 45px;
+    line-height: 1.7;
+  }
+
+  .start-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #8B5CF6, #A78BFA);
+    color: #fff;
+    padding: 16px 36px;
+    border-radius: 16px;
+    font-size: 17px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+  }
+
+  .start-btn:hover {
+    background: linear-gradient(135deg, #7C3AED, #9D7BF8);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(139, 92, 246, 0.4);
+  }
+
+  .start-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 12px rgba(139, 92, 246, 0.2);
+  }
+
+  @media (max-width: 600px) {
+    .test-content {
+      padding: 35px 20px;
+    }
+    .test-title {
+      font-size: 30px;
+    }
+  }
+</style>
+
+<div class="test-detail-container">
+  <div class="test-card">
+    <!-- 🌄 Обложка — подставляется динамически в зависимости от теста -->
+    {% if "выгорания" in test.title|lower %}
+      <img class="test-image" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1400&q=80" alt="burnout test">
+    {% elif "отношения" in test.title|lower %}
+      <img class="test-image" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1400&q=80" alt="relationship test">
+    {% elif "границы" in test.title|lower %}
+      <img class="test-image" src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?auto=format&fit=crop&w=1400&q=80" alt="personal boundaries test">
+    {% else %}
+      <img class="test-image" src="https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1400&q=80" alt="psychology test">
+    {% endif %}
+
+    <div class="test-content">
+      <h1 class="test-title">{{ test.title }}</h1>
+      <p class="test-description">{{ test.description }}</p>
+      <a href="{% url 'test_start' test.slug %}" class="start-btn">Начать тест</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

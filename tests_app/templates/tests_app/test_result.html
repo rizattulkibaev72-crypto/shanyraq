@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  body {
+    background-color: #FFFFFF;
+    color: #0A0A0A;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+  }
+
+  .result-container {
+    max-width: 900px;
+    margin: 100px auto;
+    padding: 50px 40px 80px;
+    text-align: center;
+    background: #F5F0E8;
+    border-radius: 48px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 1s ease forwards;
+  }
+
+  /* Иллюстрация фоном */
+  .result-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.18;
+    z-index: 0;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .result-icon {
+    font-size: 70px;
+    margin-bottom: 12px;
+  }
+
+  .result-title {
+    font-size: 46px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+  }
+
+  .result-text {
+    font-size: 20px;
+    font-weight: 500;
+    color: #222;
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+
+  .recommendations {
+    font-size: 16.5px;
+    color: #444;
+    line-height: 1.8;
+    background: rgba(255,255,255,0.9);
+    border-radius: 24px;
+    padding: 28px 36px;
+    box-shadow: inset 0 0 0 1px #e9e9e9;
+    margin-bottom: 45px;
+    text-align: left;
+  }
+
+  .back-btn {
+    display: inline-block;
+    background: #8B5CF6;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 14px 34px;
+    border-radius: 14px;
+    font-size: 17px;
+    transition: all 0.3s ease;
+  }
+
+  .back-btn:hover {
+    background: #7A49E0;
+    transform: translateY(-3px);
+  }
+
+  @media (max-width: 600px) {
+    .result-container {
+      margin: 60px 20px;
+      padding: 40px 24px;
+    }
+    .result-title {
+      font-size: 32px;
+    }
+    .result-text {
+      font-size: 18px;
+    }
+  }
+</style>
+
+<div class="result-container">
+
+  <!-- 🔮 Динамический фон -->
+  {% if "низкий" in result_text|lower %}
+    <div class="result-bg" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=60');"></div>
+  {% elif "средний" in result_text|lower %}
+    <div class="result-bg" style="background-image: url('https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?auto=format&fit=crop&w=1200&q=60');"></div>
+  {% elif "высокий" in result_text|lower %}
+    <div class="result-bg" style="background-image: url('https://images.unsplash.com/photo-1522204523234-872f2ef3a2b3?auto=format&fit=crop&w=1200&q=60');"></div>
+  {% else %}
+    <div class="result-bg" style="background-image: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1200&q=60');"></div>
+  {% endif %}
+
+  <div class="result-content">
+    <div class="result-icon">
+      {% if "низкий" in result_text|lower %}🌿
+      {% elif "средний" in result_text|lower %}🌤
+      {% elif "высокий" in result_text|lower %}🔥
+      {% else %}💬
+      {% endif %}
+    </div>
+
+    <h1 class="result-title">{{ test.title }}</h1>
+    <p class="result-text">{{ result_text }}</p>
+
+    <div class="recommendations">
+      {% if "низкий" in result_text|lower %}
+        🌿 У тебя всё под контролем. Продолжай сохранять баланс между обязанностями и отдыхом. 
+        Забота о себе — твоя сильная сторона.
+      {% elif "средний" in result_text|lower %}
+        🌤 Иногда ты чувствуешь внутреннюю усталость. Попробуй давать себе больше пространства и времени на восстановление.
+      {% elif "высокий" in result_text|lower %}
+        🔥 Похоже, ты на грани эмоционального выгорания. Сейчас самое время притормозить и позаботиться о себе — отдых, разговор с близкими или специалистом поможет восстановиться.
+      {% else %}
+        💬 Продолжай путь самопознания — каждый шаг делает тебя осознаннее.
+      {% endif %}
+    </div>
+
+    <a href="{% url 'tests_list' %}" class="back-btn">← Вернуться к тестам</a>
+  </div>
+</div>
+
+{% endblock %}

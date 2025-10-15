@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="login-wrapper">
+  <div class="login-card">
+    <h1 class="login-title">Вход в аккаунт</h1>
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_username">Имя пользователя</label>
+        {{ form.username }}
+      </div>
+
+      <div class="form-group">
+        <label for="id_password">Пароль</label>
+        {{ form.password }}
+      </div>
+
+      <button type="submit" class="login-btn">Войти</button>
+    </form>
+
+<p class="login-text">
+  Нет аккаунта? <span style="color:#8B5CF6; font-weight:600;">Обратитесь к администратору</span>
+</p>
+  </div>
+</div>
+
+<style>
+body {
+  background: #F5F0E8;
+  font-family: 'Inter', sans-serif;
+}
+
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.login-card {
+  background: #FFFFFF;
+  padding: 50px 60px;
+  border-radius: 30px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  width: 400px;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+.login-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0A0A0A;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #E0E0E0;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #8B5CF6;
+  box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
+}
+
+.login-btn {
+  width: 100%;
+  background: #8B5CF6;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 700;
+}
+
+.login-btn:hover {
+  background: #7C3AED;
+  transform: translateY(-1px);
+}
+
+.login-text {
+  margin-top: 25px;
+  font-size: 14px;
+  color: #555;
+}
+
+.login-text a {
+  color: #8B5CF6;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-text a:hover {
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+{% endblock %}

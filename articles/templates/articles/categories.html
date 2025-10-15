@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .categories-container {
+        max-width: 1100px;
+        margin: 80px auto;
+        padding: 40px;
+    }
+
+    h1 {
+        font-size: 42px;
+        text-align: center;
+        margin-bottom: 50px;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 30px;
+    }
+
+    .category-card {
+        background: #fafafa;
+        border-radius: 20px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: #111;
+    }
+
+    .category-card:hover {
+        transform: translateY(-5px);
+        background: #f5f0e8;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    }
+
+    .category-name {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .category-description {
+        color: #555;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+</style>
+
+<div class="categories-container">
+    <h1>Категории журнала <span style="color:#8B5CF6;">Shanyraq</span></h1>
+
+    <div class="category-grid">
+        {% for category in categories %}
+        <a href="{% url 'category_detail' category.slug %}" class="category-card">
+            <div class="category-name">{{ category.name }}</div>
+            <div class="category-description">{{ category.description }}</div>
+        </a>
+        {% empty %}
+        <p style="text-align:center;">Категорий пока нет.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

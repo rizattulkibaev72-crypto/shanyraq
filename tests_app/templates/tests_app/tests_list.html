@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  .section-title {
+    text-align: center;
+    font-size: 48px;
+    font-weight: 900;
+    margin-bottom: 30px;
+  }
+
+  .filter-bar {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .filter-btn {
+    display: inline-block;
+    margin: 6px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    border: 2px solid transparent;
+    background: #F5F0E8;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-decoration: none;
+  }
+
+  .filter-btn:hover {
+    background: #F0E8FF;
+    color: #8B5CF6;
+  }
+
+  .filter-btn.active {
+    background: linear-gradient(135deg, #8B5CF6, #A78BFA);
+    color: white;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+  }
+
+  .tests-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 0 20px;
+  }
+
+  .test-card {
+    background: #F5F0E8;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+  }
+
+  .test-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .test-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #8B5CF6, #A78BFA);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+
+  .test-btn:hover {
+    background: linear-gradient(135deg, #7C3AED, #9D7BF8);
+  }
+</style>
+
+<h1 class="section-title">Психологические тесты</h1>
+
+<div class="filter-bar">
+  <a href="?theme=" class="filter-btn {% if not selected_theme %}active{% endif %}">Все</a>
+  {% for value, label in themes %}
+    <a href="?theme={{ value }}" class="filter-btn {% if selected_theme == value %}active{% endif %}">
+      {{ label }}
+    </a>
+  {% endfor %}
+</div>
+
+<div class="tests-grid">
+  {% for test in tests %}
+    <div class="test-card">
+      <h3>{{ test.title }}</h3>
+      <p>{{ test.description|truncatechars:100 }}</p>
+      <p>⏱ {{ test.time_to_complete }} мин · 🧩 {{ test.questions_count }} вопросов</p>
+      <a href="{% url 'test_detail' test.slug %}" class="test-btn">Пройти тест</a>
+    </div>
+  {% empty %}
+    <p>Пока нет тестов в этой категории.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

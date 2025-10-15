@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  .about-wrapper {
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 0 24px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .about-header {
+    background: linear-gradient(135deg, #EDE9FE, #F5F0E8);
+    border-radius: 28px;
+    padding: 60px;
+    box-shadow: 0 16px 40px rgba(139, 92, 246, 0.1);
+    text-align: center;
+  }
+
+  .about-header h1 {
+    font-size: 48px;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    color: #0A0A0A;
+  }
+
+  .about-header p {
+    font-size: 18px;
+    color: #4B4B4B;
+    margin: 0 auto;
+    max-width: 720px;
+  }
+
+  .about-tags {
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .about-tag {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #4B5563;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+
+  .section {
+    margin-top: 80px;
+    text-align: center;
+  }
+
+  .section h2 {
+    font-size: 28px;
+    margin-bottom: 24px;
+    color: #0A0A0A;
+  }
+
+  .section p {
+    color: #555;
+    font-size: 17px;
+    max-width: 800px;
+    margin: 0 auto 40px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #EEE;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
+  }
+
+  .card h3 {
+    color: #111;
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .card p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  footer.about-footer {
+    margin-top: 100px;
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  .reveal.show {
+    opacity: 1;
+    transform: translateY(0);
+    animation: fadeUp .6s ease forwards;
+  }
+</style>
+
+<div class="about-wrapper">
+
+  <div class="about-header reveal">
+    <h1>Shanyraq Journal — медиа о&nbsp;психологии и&nbsp;саморазвитии</h1>
+    <p>Мы создаём спокойное, осознанное пространство, где психология, отношения и личностный рост соединяются в бережных статьях и практиках.</p>
+    <div class="about-tags">
+      <span class="about-tag">Основан в 2025</span>
+      <span class="about-tag">10k+ читателей</span>
+      <span class="about-tag">Авторский подход</span>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <h2>Наш подход</h2>
+    <p>Мы верим, что понимание себя — основа счастливой жизни. Поэтому создаём контент, который помогает развивать эмоциональный интеллект и внутреннее равновесие.</p>
+
+    <div class="grid-3">
+      <div class="card reveal">
+        <h3>Простым языком</h3>
+        <p>Рассказываем о сложных идеях так, чтобы они были понятны каждому. Без заумных терминов — только суть.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Этика и забота</h3>
+        <p>Уважение к читателю — наш главный принцип. Мы избегаем кликов, громких заголовков и лишнего шума.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Осознанные практики</h3>
+        <p>Каждый материал — это шаг к себе: тест, размышление или упражнение, которое можно применить прямо сейчас.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <h2>Миссия проекта</h2>
+    <p>Shanyraq Journal создан, чтобы вдохновлять людей на внутренние перемены и помогать видеть мир с теплом, доверием и вниманием к себе и другим.</p>
+  </div>
+
+
+</div>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+  }, { threshold: 0.15 });
+  els.forEach(el => obs.observe(el));
+</script>
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="register-container">
+  <div class="register-box">
+    <h1 class="register-title">Регистрация</h1>
+    <p class="register-subtitle">Создай профиль SHANYRAQ 💜</p>
+
+    <form method="POST" class="register-form">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_username">Имя пользователя</label>
+        {{ form.username }}
+      </div>
+      <div class="form-group">
+        <label for="id_password1">Пароль</label>
+        {{ form.password1 }}
+      </div>
+      <div class="form-group">
+        <label for="id_password2">Подтверждение пароля</label>
+        {{ form.password2 }}
+      </div>
+
+      <button type="submit" class="register-btn">Создать аккаунт</button>
+    </form>
+
+    <p class="register-login">
+      Уже с нами? <a href="{% url 'login' %}">Войти</a>
+    </p>
+  </div>
+</div>
+
+<style>
+body {
+  background: #F5F0E8;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ===== Контейнер ===== */
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+/* ===== Карточка ===== */
+.register-box {
+  background: #FFFFFF;
+  padding: 50px 60px;
+  border-radius: 30px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  width: 360px;
+  text-align: center;
+  transition: 0.3s;
+}
+.register-box:hover {
+  transform: translateY(-3px);
+}
+
+/* ===== Заголовки ===== */
+.register-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #0A0A0A;
+  margin-bottom: 6px;
+}
+.register-subtitle {
+  font-size: 14px;
+  color: #6B6B6B;
+  margin-bottom: 28px;
+}
+
+/* ===== Поля ===== */
+.form-group {
+  text-align: left;
+  margin-bottom: 18px;
+}
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+.register-form input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #E0E0E0;
+  border-radius: 10px;
+  background: #FAFAFA;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+.register-form input:focus {
+  border-color: #8B5CF6;
+  background: #FFF;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+  outline: none;
+}
+
+/* ===== Кнопка ===== */
+.register-btn {
+  width: 100%;
+  background: #8B5CF6;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 11px 0;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(139, 92, 246, 0.25);
+}
+.register-btn:hover {
+  background: #7C3AED;
+  transform: translateY(-2px);
+}
+
+/* ===== Текст входа ===== */
+.register-login {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #444;
+}
+.register-login a {
+  color: #8B5CF6;
+  font-weight: 600;
+  text-decoration: none;
+}
+.register-login a:hover {
+  text-decoration: underline;
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  body {
+    background-color: #FFFFFF;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: #0A0A0A;
+  }
+
+  .test-container {
+    max-width: 800px;
+    margin: 100px auto;
+    padding: 50px 40px 80px;
+    background: #F5F0E8;
+    border-radius: 36px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+    animation: fadeIn 0.8s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  h1 {
+    font-size: 38px;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .progress-bar {
+    height: 10px;
+    background: #eee;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 25px 0 50px;
+  }
+
+  .progress {
+    height: 100%;
+    background: linear-gradient(90deg, #8B5CF6, #A78BFA);
+    width: {{ progress }}%;
+    transition: width 0.5s ease;
+  }
+
+  .question-number {
+    font-weight: 700;
+    font-size: 22px;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+
+  .question-text {
+    font-size: 20px;
+    margin-bottom: 35px;
+    line-height: 1.6;
+  }
+
+  form {
+    text-align: left;
+  }
+
+  label {
+    display: block;
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: all 0.25s ease;
+    border: 2px solid transparent;
+  }
+
+  input[type="radio"] {
+    display: none;
+  }
+
+  input[type="radio"]:checked + label {
+    border-color: #8B5CF6;
+    background: rgba(139, 92, 246, 0.08);
+    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.25);
+  }
+
+  button {
+    display: inline-block;
+    margin-top: 30px;
+    background: linear-gradient(135deg, #8B5CF6, #A78BFA);
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+  }
+
+  button:hover {
+    background: linear-gradient(135deg, #7C3AED, #9D7BF8);
+    transform: translateY(-3px);
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .test-container {
+      margin: 60px 20px;
+      padding: 35px 25px;
+    }
+    h1 {
+      font-size: 28px;
+    }
+    .question-text {
+      font-size: 18px;
+    }
+  }
+</style>
+
+<div class="test-container">
+  <h1>{{ test.title }}</h1>
+  
+  <div class="progress-bar">
+    <div class="progress" style="width: {{ progress }}%;"></div>
+  </div>
+
+  <p class="question-number">Вопрос {{ current }} из {{ total }}</p>
+  <p class="question-text">{{ question.text }}</p>
+
+  <form method="POST">
+    {% csrf_token %}
+    
+    <input type="radio" name="answer" value="a" id="optionA">
+    <label for="optionA">{{ question.option_a }}</label>
+
+    <input type="radio" name="answer" value="b" id="optionB">
+    <label for="optionB">{{ question.option_b }}</label>
+
+    <input type="radio" name="answer" value="c" id="optionC">
+    <label for="optionC">{{ question.option_c }}</label>
+
+    <div class="center">
+      <button type="submit">Далее →</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

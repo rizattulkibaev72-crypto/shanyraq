@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 style="text-align:center; margin:30px 0;">🪶 {{ category.name }}</h1>
+<p style="text-align:center; color:#666; margin:-10px 0 30px;">{{ category.description }}</p>
+
+<div class="articles" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px;">
+  {% for article in articles %}
+    <a href="{% url 'article_detail' article.slug %}" class="article-card" style="text-decoration:none; color:inherit; background:#fff; border-radius:20px; padding:18px; box-shadow:0 4px 14px rgba(0,0,0,.06);">
+      <div class="article-category" style="color:#8B5CF6; font-size:13px; text-transform:uppercase; letter-spacing:1px;">{{ category.name }}</div>
+      <div class="article-title" style="font-weight:800; font-size:20px; margin:8px 0 6px;">{{ article.title }}</div>
+      <div class="article-preview" style="color:#444;">{{ article.preview|truncatechars:140 }}</div>
+    </a>
+  {% empty %}
+    <p>Пока нет статей в этой категории.</p>
+  {% endfor %}
+</div>
+{% endblock %}
